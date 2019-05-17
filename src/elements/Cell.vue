@@ -61,26 +61,26 @@ export default {
   methods: {
 
     set_cell() {
-      var img_name = this.img
-      if (this.currImg == '') {
+      var imgName = this.img
+      if (this.currImg === '') {
         this.border_style = ''
       } else {
         this.border_style = '1px solid #e6e6fa'
       }
 
       // This is some mess to figure out if it is an actual IMG bg or an alphabet
-      if (img_name === '' && this.name !== '') {
-        img_name = this.name
+      if (imgName === '' && this.name !== '') {
+        imgName = this.name
       }
 
       if (this.onClickEvent !== undefined) {
-        this.onClickEvent(img_name, this)
+        this.onClickEvent(imgName, this)
       }
     },//set_cell
 
 
-    set_img(img_name) {
-      this._img = img_name
+    set_img(imgName) {
+      this._img = imgName
     },//set_img
 
 
@@ -92,11 +92,8 @@ export default {
       var selectedImg = this.$store.getters.SelectedTile
       this.$store.dispatch('SET_GRID_TILE', [this.x, this.y, selectedImg])
     },//mouseOver
-  },
 
-  computed: {
-
-    cell_img() {
+    getCellImg() {
       var grid = this.gridTiles
       var img = this.currImg
       //make sure the cell is in the grid's range and set its IMG value.
@@ -122,6 +119,13 @@ export default {
       }catch(err) {
         return this.currImg
       }
+    }
+  },
+
+  computed: {
+
+    cell_img() {
+      return this.getCellImg()
     },
 
     gridTiles() {

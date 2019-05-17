@@ -22,9 +22,9 @@ var store = new Vuex.Store({
     set_grid_tile(state, coords) {
       var h = coords[0]
       var w = coords[1]
-      var tile_name = coords[2]
+      var tileName = coords[2]
       var newGrid = state.grid
-      newGrid[h][w] = tile_name
+      newGrid[h][w] = tileName
       Vue.set(state.grid, newGrid)
     },
 
@@ -44,7 +44,7 @@ var store = new Vuex.Store({
         for(var i = 0; i < Math.abs(diff); i++) {
           grid.push(Array(state.boardWidth).fill(''))
         }
-      }else if (diff > 0){ //reducing height
+      }else if (diff > 0) { //reducing height
         grid = grid.slice(0, size)
       }
       state.grid = grid
@@ -54,7 +54,7 @@ var store = new Vuex.Store({
     set_board_width(state, size) {
       var grid = state.grid
       var diff = state.boardWidth - size
-      for(var h = 0; h < state.boardHeight; h++){
+      for(var h = 0; h < state.boardHeight; h++) {
         if (diff < 0) {                   //adding columns
           //use ... or it will create wacky chars. IDK why. JS nonsense..
           grid[h].push(...Array(Math.abs(diff)).fill(''))
