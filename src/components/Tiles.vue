@@ -13,6 +13,7 @@
 
     .columns(v-if="currentRoute === '2deditor'")
       Cell(v-for='i in 14'
+          :key="getName(i-1)"
           :img="getName(i-1)"
           :onClickEvent="select_tile"
           :classes="getName(i-1) === selectedTile ? 'selected' : ''"
@@ -20,6 +21,7 @@
 
     .columns(v-if="currentRoute === 'hexeditor'")
           Cell(v-for='i in hexTiles'
+              :key="i"
               :onClickEvent="select_tile"
               :name="i"
               :classes="i === selectedTile ? 'selected' : ''"
@@ -43,7 +45,7 @@ export default {
 
   data() {
     return {
-      _hexTiles: []
+      tilesState: []
     }
   },//data
 
@@ -54,8 +56,8 @@ export default {
 
 
   methods: {
-    select_tile(tile_name) {
-      this.$store.dispatch('SET_TILE', tile_name)
+    select_tile(tileName) {
+      this.$store.dispatch('SET_TILE', tileName)
     },
 
     getName(index) {
@@ -63,10 +65,6 @@ export default {
       return n
     },
 
-
-    getLetter(index) {
-      return
-    },
 
     anyClick(e) {
       if (e.which === 192) {
@@ -83,20 +81,33 @@ export default {
 
     cleanBoard() {
       this.$store.dispatch('SET_GRID', [])
-      location.reload();
+      location.reload()
     },//cleanBoard
 
     fillBlanks() {
       var grid = this.grid
-      for(var h=0; h < this.boardHeight; h++){
-        for(var w=0; w < this.boardWidth; w++){
+      for(var h = 0; h < this.boardHeight; h++) {
+        for(var w = 0; w < this.boardWidth; w++) {
           if (grid[h][w] === '' || grid[h][w] === undefined) {
-            console.log(grid[h][w])
             this.$store.dispatch('SET_GRID_TILE', [h, w, this.selectedTile])
           }
         }
       }
     },//fillBlanks
+
+    getHexTiles() {
+      if (this.tilesState !== undefined && this.tilesState.length > 0)
+        return this.tilesState
+
+      var result = []
+      for (var i = 'a'.charCodeAt(0); i <= 'z'.charCodeAt(0); i++) {
+        var thingy = String.fromCharCode(i)
+        thingy = thingy.toUpperCase()
+        result.push(thingy)
+      }
+      this.tilesState = result
+      return this.tilesState
+    },
   },
 
   computed: {
@@ -104,12 +115,16 @@ export default {
       return this.$store.getters.SelectedTile
     },
 
+
+    hexTiles() { return this.getHexTiles() },
+
     cell_img() {
       if (this.selectedTile === '' || this.selectedTile === undefined)
         return ''
 
       if (this.currentRoute !== 'hexeditor')
-        return require('@/assets/' + this.selectedTile)
+        // return require('@/assets/' + this.selectedTile)
+        return '/static/' + this.selectedTile
       else
         return this.selectedTile
     },
@@ -118,19 +133,7 @@ export default {
       return this.$route.params.editor
     },
 
-    hexTiles() {
-      if (this._hexTiles !== undefined)
-        return this._hexTiles
 
-      var result = []
-      for (var i = 'a'.charCodeAt(0); i <= 'z'.charCodeAt(0); i++) {
-        var thingy = String.fromCharCode(i)
-        thingy = thingy.toUpperCase()
-        result.push(thingy)
-      }
-      this._hexTiles = result
-      return this._hexTiles
-    },
 
     grid() {
       return this.$store.getters.GridTiles

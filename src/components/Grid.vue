@@ -3,6 +3,7 @@
     .div(style="height: 10px; margin: 15px;")
     .columns.is-centered(v-for='h in height')
       Cell(v-for='w in width'
+          :key="'cell_col' + w"
           :onClickEvent="set_tile"
           :x="h-1"
           :y="w-1"
@@ -26,13 +27,13 @@ export default {
 
 
   mounted() {
-    var grid = [...Array(this.width).fill('')].map(e => Array(this.height).fill(''));
+    var grid = [...Array(this.width).fill('')].map(e => Array(this.height).fill(''))
     this.$store.dispatch('SET_GRID', grid)
   },
 
 
   methods: {
-    set_tile(tile_name, cell) {
+    set_tile(tileName, cell) {
       var tn = this.selectedTile
       this.$store.dispatch('SET_GRID_TILE', [cell.x, cell.y, tn])
     },//set_tile

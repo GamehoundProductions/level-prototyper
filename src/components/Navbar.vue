@@ -88,17 +88,17 @@ export default {
     // Generate level string and prompt user to download a file with the context.
     downloadDesign() {
       var text = this.generateLevelContext()
-      var filename = "hexed_level.txt"
-      var element = document.createElement('a');
-      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-      element.setAttribute('download', filename);
+      var filename = 'hexed_level.txt'
+      var element = document.createElement('a')
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+      element.setAttribute('download', filename)
 
-      element.style.display = 'none';
-      document.body.appendChild(element);
+      element.style.display = 'none'
+      document.body.appendChild(element)
 
-      element.click();
+      element.click()
 
-      document.body.removeChild(element);
+      document.body.removeChild(element)
     },//downloadDesign
   },//methods
 
